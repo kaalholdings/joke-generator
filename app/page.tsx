@@ -1,18 +1,41 @@
 'use client';
 
 import { useCompletion } from '@ai-sdk/react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function Home() {
   const [hasJoke, setHasJoke] = useState(false);
+  const [jokeHistory, setJokeHistory] = useState<string[]>([]);
   
+  // Load joke history from localStorage on mount
+  useEffect(() => {
+    const saved = localStorage.getItem('jokeHistory');
+    if (saved) {
+      setJokeHistory(JSON.parse(saved));
+    }
+  }, []);
+
   const { completion, isLoading, complete } = useCompletion({
     api: '/api/joke',
+    body: {
+      previousJokes: jokeHistory.slice(-20), // Send last 20 jokes to avoid
+    },
+    onFinish: (prompt, completion) => {
+      // Save new joke to history
+      const newHistory = [...jokeHistory, completion].slice(-50); // Keep last 50
+      setJokeHistory(newHistory);
+      localStorage.setItem('jokeHistory', JSON.stringify(newHistory));
+    },
   });
 
   const getJoke = async () => {
     setHasJoke(true);
     await complete('');
+  };
+
+  const clearHistory = () => {
+    setJokeHistory([]);
+    localStorage.removeItem('jokeHistory');
   };
 
   return (
@@ -26,7 +49,7 @@ export default function Home() {
               Joke Generator
             </h1>
             <p className="text-gray-500">
-              Powered by AI • Click for instant laughs
+              Powered by Groq OSS 120B • Learns what you’ve seen
             </p>
           </div>
 
@@ -71,10 +94,22 @@ export default function Home() {
             )}
           </button>
 
-          {/* Footer */}
-          <p className="mt-6 text-xs text-gray-400">
-            Built with Next.js + Vercel AI SDK
-          </p>
+          {/* Stats & Clear */}
+          <div className="mt-6 flex items-center justify-between text-xs text-gray-400">
+            <span>
+              {jokeHistory.length > 0 
+                ? `${jokeHistory.length} jokes remembered`
+                : 'Built with Next.js + Vercel AI SDK'}
+            </span>
+            {jokeHistory.length > 0 && (
+              <button 
+                onClick={clearHistory}
+                className="text-purple-500 hover:text-purple-700 underline"
+              >
+                Clear history
+              </button>
+            )}
+          </div>
         </div>
       </div>
     </div>
