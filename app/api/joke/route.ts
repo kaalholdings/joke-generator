@@ -1,15 +1,9 @@
 import { streamText } from 'ai';
-import { createOpenAI } from '@ai-sdk/openai';
-
-// Create OpenAI client configured for Vercel AI Gateway
-const openai = createOpenAI({
-  baseURL: 'https://gateway.vercel.ai/v1',
-  apiKey: process.env.AI_GATEWAY_API_KEY,
-});
+import { gateway } from '@ai-sdk/gateway';
 
 export async function POST() {
   const result = streamText({
-    model: openai('openai/gpt-4o'),
+    model: gateway('openai/gpt-4o'),
     system: `You are a hilarious comedian who tells short, clever jokes. 
 Your jokes should be:
 - Family-friendly and appropriate for all ages

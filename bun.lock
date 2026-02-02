@@ -5,6 +5,7 @@
     "": {
       "name": "joke-generator",
       "dependencies": {
+        "@ai-sdk/gateway": "^3.0.32",
         "@ai-sdk/openai": "^3.0.25",
         "@ai-sdk/react": "^3.0.69",
         "ai": "^6.0.67",
