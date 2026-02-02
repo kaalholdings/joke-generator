@@ -6,7 +6,7 @@ import { useState, useEffect } from 'react';
 export default function Home() {
   const [hasJoke, setHasJoke] = useState(false);
   const [jokeHistory, setJokeHistory] = useState<string[]>([]);
-  
+
   // Load joke history from localStorage on mount
   useEffect(() => {
     const saved = localStorage.getItem('jokeHistory');
@@ -49,7 +49,7 @@ export default function Home() {
               Joke Generator
             </h1>
             <p className="text-gray-500">
-              Powered by Groq OSS 120B • Learns what you’ve seen
+              Powered by GPT-OSS 120B • Learns what you've seen
             </p>
           </div>
 
@@ -97,12 +97,12 @@ export default function Home() {
           {/* Stats & Clear */}
           <div className="mt-6 flex items-center justify-between text-xs text-gray-400">
             <span>
-              {jokeHistory.length > 0 
+              {jokeHistory.length > 0
                 ? `${jokeHistory.length} jokes remembered`
                 : 'Built with Next.js + Vercel AI SDK'}
             </span>
             {jokeHistory.length > 0 && (
-              <button 
+              <button
                 onClick={clearHistory}
                 className="text-purple-500 hover:text-purple-700 underline"
               >

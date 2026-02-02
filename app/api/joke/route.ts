@@ -1,7 +1,7 @@
 import { streamText } from 'ai';
 import { gateway } from '@ai-sdk/gateway';
 
-const DEFAULT_MODEL = 'groq/oss-120b';
+const DEFAULT_MODEL = 'openai/gpt-oss-120b';
 
 export async function POST(request: Request) {
   // The UI sends a rolling history of jokes so we can avoid repeats over time.
