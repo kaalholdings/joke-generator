@@ -15,5 +15,5 @@ Just tell the joke directly, no preamble like "Here's a joke:" or explanations a
     prompt: 'Tell me a random, funny joke!',
   });
 
-  return result.toTextStreamResponse();
+  return result.toUIMessageStreamResponse();
 }
